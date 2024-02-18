@@ -19,8 +19,10 @@ import lombok.Getter;
 @Getter
 public class FP extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
-	 * 	敌人数量	，保持与N.X一致
+	 * 敌人数量 ，保持与N.X一致
 	 */
 	public static final int diC = 18;
 
@@ -60,7 +62,8 @@ public class FP extends JPanel {
 		w.setY(LD.WO_Y * N.HEIGHT);
 		return w;
 	}
-	private N g_di(final int x,final int y) {
+
+	private N g_di(final int x, final int y) {
 		final N w = NG.g(NRE.DI_REN, FE.D);
 		w.setX(x);
 		w.setY(y);

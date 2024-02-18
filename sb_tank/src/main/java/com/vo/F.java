@@ -11,35 +11,34 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
- *	启动类
+ * 启动类
  *
  * @author zhangzhen
  * @date 2022年10月1日
  *
  */
-public class F extends JFrame{
+public class F extends JFrame {
+
+	private static final long serialVersionUID = 1L;
 
 	public static final int STEP = 1;
 
 	private static final String TITLE = "tank游戏 WASD控制方向，J攻击";
 
-	public static final int G_HEIGHT = N.HEIGHT * N.Y_NUM ;
-	public static final int G_WIDTH = N.WIDTH * N.X_NUM ;
+	public static final int G_HEIGHT = N.HEIGHT * N.Y_NUM;
+	public static final int G_WIDTH = N.WIDTH * N.X_NUM;
 
 	public static void main(final String[] args) throws InvocationTargetException, InterruptedException {
-		SwingUtilities.invokeAndWait(new Runnable() {
-			@Override
-			public void run() {
-				final F f = new F();
-				f.setVisible(true);
-			}
+		SwingUtilities.invokeAndWait(() -> {
+			final F f = new F();
+			f.setVisible(true);
 		});
 
 	}
 
 	public F() {
 		this.setTitle(F.TITLE);
-		this.setSize(F.G_WIDTH + N.WIDTH, F.G_HEIGHT + + N.HEIGHT);
+		this.setSize(F.G_WIDTH + N.WIDTH, F.G_HEIGHT + N.HEIGHT);
 		this.setResizable(false);
 
 		this.setLocationRelativeTo(null);
@@ -47,7 +46,6 @@ public class F extends JFrame{
 
 		final FP fp = new FP();
 		final Container p = this.getContentPane();
-
 
 		fp.addKeyListener(new KeyAdapter() {
 
@@ -76,16 +74,13 @@ public class F extends JFrame{
 						break;
 					}
 					if (yM > 0) {
-						final Thread threadW = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								for (int y1 = y; fp.getWo().getFae() == FAE.U_A && y1 >= (y / N.HEIGHT) * N.HEIGHT; y1 -= 1) {
-									fp.getWo().setY(y1);
-									F.sleep();
-									fp.repaint();
-								}
-								fp.getWo().setFae(FAE.NULL);
+						final Thread threadW = new Thread(() -> {
+							for (int y1 = y; fp.getWo().getFae() == FAE.U_A && y1 >= y / N.HEIGHT * N.HEIGHT; y1 -= 1) {
+								fp.getWo().setY(y1);
+								F.sleep();
+								fp.repaint();
 							}
+							fp.getWo().setFae(FAE.NULL);
 						});
 						threadW.start();
 					}
@@ -102,17 +97,14 @@ public class F extends JFrame{
 						break;
 					}
 					final int xL = x % N.WIDTH;
-					if(xL > 0) {
-						final Thread threadA = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								for (int x1 = x; fp.getWo().getFae() == FAE.L_A && x1 >= (x / N.WIDTH) * N.WIDTH; x1 -= 1) {
-									fp.getWo().setX(x1);
-									F.sleep();
-									fp.repaint();
-								}
-								fp.getWo().setFae(FAE.NULL);
+					if (xL > 0) {
+						final Thread threadA = new Thread(() -> {
+							for (int x1 = x; fp.getWo().getFae() == FAE.L_A && x1 >= x / N.WIDTH * N.WIDTH; x1 -= 1) {
+								fp.getWo().setX(x1);
+								F.sleep();
+								fp.repaint();
 							}
+							fp.getWo().setFae(FAE.NULL);
 						});
 						threadA.start();
 					}
@@ -137,16 +129,14 @@ public class F extends JFrame{
 						break;
 					}
 					if (yMS > 0) {
-						final Thread threadW = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								for (int y1 = yS; fp.getWo().getFae() == FAE.D_A && y1 <= (yS / N.HEIGHT) * N.HEIGHT + N.HEIGHT; y1 += 1) {
-									fp.getWo().setY(y1);
-									F.sleep();
-									fp.repaint();
-								}
-								fp.getWo().setFae(FAE.NULL);
+						final Thread threadW = new Thread(() -> {
+							for (int y1 = yS; fp.getWo().getFae() == FAE.D_A
+									&& y1 <= yS / N.HEIGHT * N.HEIGHT + N.HEIGHT; y1 += 1) {
+								fp.getWo().setY(y1);
+								F.sleep();
+								fp.repaint();
 							}
+							fp.getWo().setFae(FAE.NULL);
 						});
 						threadW.start();
 					}
@@ -163,18 +153,15 @@ public class F extends JFrame{
 						break;
 					}
 					final int xR = x2 % N.WIDTH;
-					if(xR > 0) {
-						final Thread threadA = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								for (int x1 = x2; fp.getWo().getFae() == FAE.R_A
-										&& x1 <= (x2 / N.WIDTH) * N.WIDTH + N.WIDTH; x1++) {
-									fp.getWo().setX(x1);
-									F.sleep();
-									fp.repaint();
-								}
-								fp.getWo().setFae(FAE.NULL);
+					if (xR > 0) {
+						final Thread threadA = new Thread(() -> {
+							for (int x1 = x2; fp.getWo().getFae() == FAE.R_A
+									&& x1 <= x2 / N.WIDTH * N.WIDTH + N.WIDTH; x1++) {
+								fp.getWo().setX(x1);
+								F.sleep();
+								fp.repaint();
 							}
+							fp.getWo().setFae(FAE.NULL);
 						});
 						threadA.start();
 					}
@@ -196,39 +183,35 @@ public class F extends JFrame{
 					}
 					fp.getWo().setFe(FE.U);
 					fp.getWo().setFae(FAE.U);
-					final Thread thread = new Thread(new Runnable() {
-						@Override
-						public void run() {
-							boolean jixu = true;
-							while (fp.getWo().getFae() == FAE.U) {
+					final Thread thread = new Thread(() -> {
+						boolean jixu = true;
+						while (fp.getWo().getFae() == FAE.U) {
 
-								final N wo = fp.getWo();
-								final int newY = wo.getY() - F.STEP;
-								final List<N> qita = fp.getOther();
-								for (final N q : qita) {
-									if (!q.getNre().isKeTankChuanGuo() && Math.abs(newY - q.getY()) < N.HEIGHT
-											&& (Math.abs(wo.getX() - q.getX()) < N.WIDTH)) {
-										System.out.println("不能向上移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX()
-												+ "\t y = " + q.getY() + "\t wo.x = " + wo.getX() + "\two.y = "
-												+ wo.getY());
-										fp.repaint();
-										jixu = false;
-									}
-								}
-								if (newY < N.HEIGHT - N.HEIGHT) {
-									System.out.println("到最上边了,return;");
+							final N wo = fp.getWo();
+							final int newY = wo.getY() - F.STEP;
+							final List<N> qita = fp.getOther();
+							for (final N q : qita) {
+								if (!q.getNre().isKeTankChuanGuo() && Math.abs(newY - q.getY()) < N.HEIGHT
+										&& Math.abs(wo.getX() - q.getX()) < N.WIDTH) {
+									System.out
+											.println("不能向上移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX() + "\t y = "
+													+ q.getY() + "\t wo.x = " + wo.getX() + "\two.y = " + wo.getY());
 									fp.repaint();
 									jixu = false;
 								}
-								if (jixu) {
-									wo.setY(newY);
-									F.sleep();
-									fp.repaint();
-								} else {
-									fp.getWo().setFae(FAE.U);
-									break;
-								}
 							}
+							if (newY < N.HEIGHT - N.HEIGHT) {
+								System.out.println("到最上边了,return;");
+								fp.repaint();
+								jixu = false;
+							}
+							if (!jixu) {
+								fp.getWo().setFae(FAE.U);
+								break;
+							}
+							wo.setY(newY);
+							F.sleep();
+							fp.repaint();
 						}
 					});
 					thread.start();
@@ -240,45 +223,40 @@ public class F extends JFrame{
 					}
 					fp.getWo().setFe(FE.L);
 					fp.getWo().setFae(FAE.L);
-					final Thread threadA = new Thread(new Runnable() {
-						@Override
-						public void run() {
-							boolean jixu = true;
-							while(fp.getWo().getFae() == FAE.L) {
-								final N wo3 = fp.getWo();
-								final int newX = wo3.getX() - F.STEP;
+					final Thread threadA = new Thread(() -> {
+						boolean jixu = true;
+						while (fp.getWo().getFae() == FAE.L) {
+							final N wo3 = fp.getWo();
+							final int newX = wo3.getX() - F.STEP;
 
-								final List<N> qitaA = fp.getOther();
-								for (final N q : qitaA) {
-									if (!q.getNre().isKeTankChuanGuo() && Math.abs(newX - q.getX()) < N.WIDTH
-											&& (Math.abs(wo3.getY() - q.getY()) < N.HEIGHT)) {
-										System.out.println("不能向左移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX()
-												+ "\t y = " + q.getY() + "\t wo.x = " + wo3.getX() + "\two.y = "
-												+ wo3.getY());
-										fp.repaint();
-										jixu = false;
-									}
-
-									if (newX < N.WIDTH - N.WIDTH) {
-										System.out.println("到最左边了,return;");
-										fp.repaint();
-										jixu = false;
-									}
+							final List<N> qitaA = fp.getOther();
+							for (final N q : qitaA) {
+								if (!q.getNre().isKeTankChuanGuo() && Math.abs(newX - q.getX()) < N.WIDTH
+										&& Math.abs(wo3.getY() - q.getY()) < N.HEIGHT) {
+									System.out
+											.println("不能向左移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX() + "\t y = "
+													+ q.getY() + "\t wo.x = " + wo3.getX() + "\two.y = " + wo3.getY());
+									fp.repaint();
+									jixu = false;
 								}
 
-								if (jixu) {
-									wo3.setX(newX);
-									F.sleep();
+								if (newX < N.WIDTH - N.WIDTH) {
+									System.out.println("到最左边了,return;");
 									fp.repaint();
-								} else {
-									fp.getWo().setFae(FAE.L);
-									break;
+									jixu = false;
 								}
 							}
+
+							if (!jixu) {
+								fp.getWo().setFae(FAE.L);
+								break;
+							}
+							wo3.setX(newX);
+							F.sleep();
+							fp.repaint();
 						}
 					});
 					threadA.start();
-
 
 					break;
 
@@ -288,45 +266,42 @@ public class F extends JFrame{
 					}
 					fp.getWo().setFe(FE.D);
 					fp.getWo().setFae(FAE.D);
-					final Thread threadS = new Thread(new Runnable() {
-						@Override
-						public void run() {
-							boolean jixu = true;
-							while(fp.getWo().getFae() == FAE.D) {
+					final Thread threadS = new Thread(() -> {
+						boolean jixu = true;
+						while (fp.getWo().getFae() == FAE.D) {
 
-								final N wo1 = fp.getWo();
-								final int newYS = wo1.getY() + F.STEP;
+							final N wo1 = fp.getWo();
+							final int newYS = wo1.getY() + F.STEP;
 
-								final List<N> qita2 = fp.getOther();
-								for (final N q : qita2) {
-									if (!q.getNre().isKeTankChuanGuo() && Math.abs(newYS - q.getY()) < N.HEIGHT && (Math.abs(wo1.getX() - q.getX()) < N.WIDTH)) {
-										System.out.println("不能向下移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX() + "\t y = "
-												+ q.getY() + "\t wo.x = " + wo1.getX() + "\two.y = " + wo1.getY());
-										fp.repaint();
-										jixu = false;
-									}
-
-									if(newYS > N.Y_NUM * N.HEIGHT - N.HEIGHT) {
-										System.out.println("下到底了,return;");
-										fp.repaint();
-										jixu = false;
-									}
-
-								}
-
-								if (jixu) {
-									wo1.setY(newYS);
-									F.sleep();
+							final List<N> qita2 = fp.getOther();
+							for (final N q : qita2) {
+								if (!q.getNre().isKeTankChuanGuo() && Math.abs(newYS - q.getY()) < N.HEIGHT
+										&& Math.abs(wo1.getX() - q.getX()) < N.WIDTH) {
+									System.out
+											.println("不能向下移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX() + "\t y = "
+													+ q.getY() + "\t wo.x = " + wo1.getX() + "\two.y = " + wo1.getY());
 									fp.repaint();
-								} else {
-									fp.getWo().setFae(FAE.D);
-									break;
+									jixu = false;
 								}
+
+								if (newYS > N.Y_NUM * N.HEIGHT - N.HEIGHT) {
+									System.out.println("下到底了,return;");
+									fp.repaint();
+									jixu = false;
+								}
+
 							}
+
+							if (!jixu) {
+								fp.getWo().setFae(FAE.D);
+								break;
+							}
+							wo1.setY(newYS);
+							F.sleep();
+							fp.repaint();
 						}
 					});
 					threadS.start();
-
 
 					break;
 
@@ -336,43 +311,39 @@ public class F extends JFrame{
 					}
 					fp.getWo().setFe(FE.R);
 					fp.getWo().setFae(FAE.R);
-					final Thread threadD = new Thread(new Runnable() {
-						@Override
-						public void run() {
+					final Thread threadD = new Thread(() -> {
 
-							boolean jixu = true;
-							while (fp.getWo().getFae() == FAE.R) {
+						boolean jixu = true;
+						while (fp.getWo().getFae() == FAE.R) {
 
-								final N wo4 = fp.getWo();
-								final int newXD = wo4.getX() + F.STEP;
+							final N wo4 = fp.getWo();
+							final int newXD = wo4.getX() + F.STEP;
 
-								final List<N> qitaD = fp.getOther();
-								for (final N q : qitaD) {
-									if (!q.getNre().isKeTankChuanGuo() && Math.abs(newXD - q.getX()) < N.WIDTH
-											&& (Math.abs(wo4.getY() - q.getY()) < N.HEIGHT)) {
-										System.out.println("不能向右移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX()
-												+ "\t y = " + q.getY() + "\t wo.x = " + wo4.getX() + "\two.y = "
-												+ wo4.getY());
-										fp.repaint();
-										jixu = false;
-									}
-
-									if (newXD > N.X_NUM * N.WIDTH - N.WIDTH) {
-										System.out.println("到最右边了,return;");
-										fp.repaint();
-										jixu = false;
-									}
+							final List<N> qitaD = fp.getOther();
+							for (final N q : qitaD) {
+								if (!q.getNre().isKeTankChuanGuo() && Math.abs(newXD - q.getX()) < N.WIDTH
+										&& Math.abs(wo4.getY() - q.getY()) < N.HEIGHT) {
+									System.out
+											.println("不能向右移动，碰到了 " + q.getName() + "\t" + " x = " + q.getX() + "\t y = "
+													+ q.getY() + "\t wo.x = " + wo4.getX() + "\two.y = " + wo4.getY());
+									fp.repaint();
+									jixu = false;
 								}
 
-								if (jixu) {
-									wo4.setX(newXD);
-									F.sleep();
+								if (newXD > N.X_NUM * N.WIDTH - N.WIDTH) {
+									System.out.println("到最右边了,return;");
 									fp.repaint();
-								} else {
-									fp.getWo().setFae(FAE.R);
-									break;
+									jixu = false;
 								}
 							}
+
+							if (!jixu) {
+								fp.getWo().setFae(FAE.R);
+								break;
+							}
+							wo4.setX(newXD);
+							F.sleep();
+							fp.repaint();
 						}
 					});
 					threadD.start();
@@ -389,30 +360,26 @@ public class F extends JFrame{
 					switch (fe) {
 					case U:
 						final int y = wwwww.getY();
-						final Thread thread2 = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								final int x = wwwww.getX();
-								for (int y1 = y; y1 > 0; y1 -= PD.PX) {
-									final int fromX = ((Math.abs(x / N.WIDTH) * N.WIDTH)) + N.WIDTH / 2 - PD.WIDTH / 2;
-									final PD pd = new PD(PD.COLOR,FE.U, fromX, fromX, y1, 0, false,
-											false);
-									wwwww.setPd(pd);
+						final Thread thread2 = new Thread(() -> {
+							final int x = wwwww.getX();
+							for (int y1 = y; y1 > 0; y1 -= PD.PX) {
+								final int fromX = Math.abs(x / N.WIDTH) * N.WIDTH + N.WIDTH / 2 - PD.WIDTH / 2;
+								final PD pd = new PD(PD.COLOR, FE.U, fromX, fromX, y1, 0, false, false);
+								wwwww.setPd(pd);
 
-									final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
+								final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
 
-									try {
-										Thread.sleep(1);
-									} catch (final InterruptedException e) {
-										e.printStackTrace();
-									}
-									if(!jixu) {
-										break;
-									}
-									fp.repaint();
+								try {
+									Thread.sleep(1);
+								} catch (final InterruptedException e1) {
+									e1.printStackTrace();
 								}
-								wwwww.getPd().setKefashe(true);
+								if (!jixu) {
+									break;
+								}
+								fp.repaint();
 							}
+							wwwww.getPd().setKefashe(true);
 						});
 						thread2.start();
 
@@ -420,31 +387,28 @@ public class F extends JFrame{
 
 					case D:
 						final int yD = wwwww.getY();
-						final Thread threadD1 = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								final int x = wwwww.getX();
-								for (int y1 = yD; y1 < F.G_HEIGHT; y1 += PD.PX) {
-									final int fromX = ((Math.abs(x / N.WIDTH) * N.WIDTH)) + N.WIDTH / 2 - PD.WIDTH / 2;
-									final int fromY = y1 + N.HEIGHT;
-									final PD pd = new PD(PD.COLOR,FE.D, fromX, fromX, fromY, 0, false,false);
-									wwwww.setPd(pd);
+						final Thread threadD1 = new Thread(() -> {
+							final int x = wwwww.getX();
+							for (int y1 = yD; y1 < F.G_HEIGHT; y1 += PD.PX) {
+								final int fromX = Math.abs(x / N.WIDTH) * N.WIDTH + N.WIDTH / 2 - PD.WIDTH / 2;
+								final int fromY = y1 + N.HEIGHT;
+								final PD pd = new PD(PD.COLOR, FE.D, fromX, fromX, fromY, 0, false, false);
+								wwwww.setPd(pd);
 
-									final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
+								final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
 
-									fp.repaint();
-									try {
-										Thread.sleep(1);
-									} catch (final InterruptedException e) {
-										e.printStackTrace();
-									}
-									if(!jixu) {
-										break;
-									}
-
+								fp.repaint();
+								try {
+									Thread.sleep(1);
+								} catch (final InterruptedException e1) {
+									e1.printStackTrace();
 								}
-								wwwww.getPd().setKefashe(true);
+								if (!jixu) {
+									break;
+								}
+
 							}
+							wwwww.getPd().setKefashe(true);
 						});
 						threadD1.start();
 
@@ -452,63 +416,57 @@ public class F extends JFrame{
 
 					case R:
 						final int yR = wwwww.getY();
-						final Thread threadR = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								final int x = wwwww.getX();
-								final int y = wwwww.getY();
-								for (int x1 = x; x1 <= F.G_WIDTH; x1 += PD.PX) {
-									final int fromY = ((Math.abs(y / N.HEIGHT) * N.HEIGHT)) + N.HEIGHT / 2 - PD.HEIGHT / 2;
-									final int fromX = x1 + N.WIDTH;
-									final PD pd = new PD(PD.COLOR, FE.R, fromX, F.G_WIDTH, fromY, fromY, false, false);
-									wwwww.setPd(pd);
+						final Thread threadR = new Thread(() -> {
+							final int x = wwwww.getX();
+							final int y1 = wwwww.getY();
+							for (int x1 = x; x1 <= F.G_WIDTH; x1 += PD.PX) {
+								final int fromY = Math.abs(y1 / N.HEIGHT) * N.HEIGHT + N.HEIGHT / 2 - PD.HEIGHT / 2;
+								final int fromX = x1 + N.WIDTH;
+								final PD pd = new PD(PD.COLOR, FE.R, fromX, F.G_WIDTH, fromY, fromY, false, false);
+								wwwww.setPd(pd);
 
-									final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
+								final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
 
-									fp.repaint();
-									try {
-										Thread.sleep(1);
-									} catch (final InterruptedException e) {
-										e.printStackTrace();
-									}
-
-									if (!jixu) {
-										break;
-									}
+								fp.repaint();
+								try {
+									Thread.sleep(1);
+								} catch (final InterruptedException e1) {
+									e1.printStackTrace();
 								}
-								wwwww.getPd().setKefashe(true);
+
+								if (!jixu) {
+									break;
+								}
 							}
+							wwwww.getPd().setKefashe(true);
 						});
 						threadR.start();
 
 						break;
 
 					case L:
-						final Thread threadL = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								final int x = wwwww.getX();
-								final int y = wwwww.getY();
-								for (int x1 = x; x1 > 0; x1 -= PD.PX) {
-									final int fromY = ((Math.abs(y / N.HEIGHT) * N.HEIGHT)) + N.HEIGHT / 2 - PD.HEIGHT / 2;
-									final int fromX = x1 - N.WIDTH;
-									final PD pd = new PD(PD.COLOR,FE.L, fromX, 0, fromY, fromY, false,false);
-									wwwww.setPd(pd);
+						final Thread threadL = new Thread(() -> {
+							final int x = wwwww.getX();
+							final int y1 = wwwww.getY();
+							for (int x1 = x; x1 > 0; x1 -= PD.PX) {
+								final int fromY = Math.abs(y1 / N.HEIGHT) * N.HEIGHT + N.HEIGHT / 2 - PD.HEIGHT / 2;
+								final int fromX = x1 - N.WIDTH;
+								final PD pd = new PD(PD.COLOR, FE.L, fromX, 0, fromY, fromY, false, false);
+								wwwww.setPd(pd);
 
-									final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
+								final boolean jixu = F.this.jiance_pd_pengzhuang_JIXU(pd, fp.getLd(), fp.getDi());
 
-									fp.repaint();
-									try {
-										Thread.sleep(1);
-									} catch (final InterruptedException e) {
-										e.printStackTrace();
-									}
-									if (!jixu) {
-										break;
-									}
+								fp.repaint();
+								try {
+									Thread.sleep(1);
+								} catch (final InterruptedException e1) {
+									e1.printStackTrace();
 								}
-								wwwww.getPd().setKefashe(true);
+								if (!jixu) {
+									break;
+								}
 							}
+							wwwww.getPd().setKefashe(true);
 						});
 						threadL.start();
 
@@ -561,8 +519,8 @@ public class F extends JFrame{
 					if (n == null) {
 						continue;
 					}
-					if ((pd.getFromY() - n.getY()) <= N.HEIGHT && pd.getFromX() > n.getX()
-							&& (pd.getFromX() - n.getX()) <= N.WIDTH) {
+					if (pd.getFromY() - n.getY() <= N.HEIGHT && pd.getFromX() > n.getX()
+							&& pd.getFromX() - n.getX() <= N.WIDTH) {
 						final NRE nre = n.getNre();
 						final boolean kePaodanChuanGuo = nre.isKePaodanChuanGuo();
 						// 不可被炮弹穿过
@@ -597,7 +555,7 @@ public class F extends JFrame{
 				if (n == null) {
 					continue;
 				}
-				// pd > U  pdY >= nY &&
+				// pd > U pdY >= nY &&
 				if (pd.getFromY() >= n.getY() && Math.abs(pd.getFromX() - n.getX()) <= N.WIDTH) {
 					final NRE nre = n.getNre();
 					final boolean kePaodanChuanGuo = nre.isKePaodanChuanGuo();
@@ -634,8 +592,8 @@ public class F extends JFrame{
 					if (n == null) {
 						continue;
 					}
-					if ((n.getY() - pd.getFromY()) <= N.HEIGHT && pd.getFromX() > n.getX()
-							&& (pd.getFromX() - n.getX()) <= N.WIDTH) {
+					if (n.getY() - pd.getFromY() <= N.HEIGHT && pd.getFromX() > n.getX()
+							&& pd.getFromX() - n.getX() <= N.WIDTH) {
 						System.out.println("碰到碰到敌军了,di.name = " + n.getName());
 						final NRE nre = n.getNre();
 						final boolean kePaodanChuanGuo = nre.isKePaodanChuanGuo();
@@ -663,16 +621,15 @@ public class F extends JFrame{
 				}
 			}
 
-
 			// 碰到地图
 			final int xHD = fromX / N.WIDTH;
 			final N[][] dD = ld.getD();
-			for (int yHD = (fromY / N.HEIGHT) >= N.Y_NUM ? N.Y_NUM - 1 : (fromY / N.HEIGHT); yHD > 0; yHD--) {
+			for (int yHD = fromY / N.HEIGHT >= N.Y_NUM ? N.Y_NUM - 1 : fromY / N.HEIGHT; yHD > 0; yHD--) {
 				final N n = dD[yHD][xHD];
 				if (n == null) {
 					continue;
 				}
-				// pd > U  pdY <= nY &&
+				// pd > U pdY <= nY &&
 				if (pd.getFromY() <= n.getY() && Math.abs(pd.getFromX() - n.getX()) <= N.WIDTH) {
 					final NRE nre = n.getNre();
 					final boolean kePaodanChuanGuo = nre.isKePaodanChuanGuo();
@@ -710,8 +667,8 @@ public class F extends JFrame{
 					if (n == null) {
 						continue;
 					}
-					if ((n.getX() - pd.getFromX()) <= N.WIDTH && pd.getFromY() > n.getY()
-							&& (pd.getFromY() - n.getY()) <= N.HEIGHT) {
+					if (n.getX() - pd.getFromX() <= N.WIDTH && pd.getFromY() > n.getY()
+							&& pd.getFromY() - n.getY() <= N.HEIGHT) {
 						final NRE nre = n.getNre();
 						final boolean kePaodanChuanGuo = nre.isKePaodanChuanGuo();
 						// 不可被炮弹穿过
@@ -783,7 +740,8 @@ public class F extends JFrame{
 					if (n == null) {
 						continue;
 					}
-					if ((pd.getFromX() - n.getX()) <= N.WIDTH && pd.getFromY() > n.getY() && (pd.getFromY() - n.getY()) <= N.HEIGHT) {
+					if (pd.getFromX() - n.getX() <= N.WIDTH && pd.getFromY() > n.getY()
+							&& pd.getFromY() - n.getY() <= N.HEIGHT) {
 						final NRE nre = n.getNre();
 						final boolean kePaodanChuanGuo = nre.isKePaodanChuanGuo();
 						// 不可被炮弹穿过
